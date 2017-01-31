@@ -1,0 +1,1 @@
+@include('admin.template.partials.nav')
