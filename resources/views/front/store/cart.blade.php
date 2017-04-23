@@ -5,7 +5,7 @@
     </div>
 
     @if(count($cart))
-    <a href="{{route('cart.trash')}}" class="btn btn-danger">Vaciar Carrito</a>
+    <a href="{{route('cart.trash')}}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Vaciar Carrito</a>
     <div class="table-responsive">
         <table class="table table-striped table-hover ">
             <thead>
@@ -23,24 +23,24 @@
                 <tr>
                     <td><img src="{{asset('images/products/'.$item->image)}}" alt="" width="50"></td>                
                     <td>{{$item->name}}</td>
-                    <td>{{number_format($item->price,2)}}</td>
+                    <td>$ {{number_format($item->price,2)}}</td>
                     <td>
                         <input type="number" value="{{$item->quantity}}" min="1" max="100" id="input_quantity_{{$item->id}}"
                         onchange="change_input('{{$item->slug}}',{{$item->id}})">
                     </td>
-                    <td>{{number_format($item->price*$item->quantity,2)}}</td>
-                    <td><a href="{{route('cart.delete',$item->slug)}}" class="btn btn-danger">x</a></td>
+                    <td>$ {{number_format($item->price*$item->quantity,2)}}</td>
+                    <td><a href="{{route('cart.delete',$item->slug)}}" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></a></td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
         <h3>
-            Total:${{number_format($total,2)}}
+            <span class="label label-success">Total: ${{number_format($total,2)}}</span>
         </h3>
         <hr>
         <p>
             <a href="{{route('store.index')}}" class="btn btn-primary">Seguir Comprando</a>
-            <a href="{{route('order-detail')}}" class="btn btn-primary">Continuar</a>
+            <a href="{{route('order-detail')}}" class="btn btn-warning">Continuar</a>
         </p>
     </div>
     @else

@@ -18,15 +18,25 @@ class Category extends Model
     }
     protected $table="categories";
 
-    protected $fillable=['name','description'];
+    protected $fillable=['name','slug','description'];
     
-    public function products(){
-    	return $this->hasMany('App\Product');
+    public static function filterAndPaginate($request){
+        return Category::name($request->name)->orderBy('id','desc')->paginate();
     }
     
-    public function scopeSearch($query,$name){
+    public function subcategories(){
+    	return $this->hasMany('App\SubCategory');
+    }
+    
+
+    
+    public function scopeName($query,$name){
          if(trim($name)!=""){
             return $query->where('name','LIKE',"%$name%");
         }
+    }
+    
+    public function scopeSearchCategory($query,$slug){
+        return $query->where('slug',$slug);
     }
 }

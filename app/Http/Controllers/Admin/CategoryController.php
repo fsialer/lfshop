@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\EditCategoryRequest;
 use App\Http\Controllers\Controller;
 use App\Category;
+use Laracasts\Flash\Flash;
 class CategoryController extends Controller
 {
     /**
@@ -14,7 +18,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories=Category::search($request->name)->orderBy('id','desc')->paginate(6);
+        $categories=Category::filterAndPaginate($request);
         return view('admin.category.index')->with('categories',$categories);
     }
 
@@ -34,11 +38,11 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $category=new Category($request->all());
         $category->save();
-        
+        Flash::success("Se ha creado la categoria ".$category->name.' de forma satisfactoria.')->important();
         return redirect()->route('category.index');
     }
 
@@ -61,7 +65,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-       $category=Category::find($id);
+       $category=Category::find($id);       
         return view('admin.category.edit')->with('category',$category);
     }
 
@@ -72,11 +76,12 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditCategoryRequest $request, $id)
     {
         $category=Category::find($id);
         $category->fill($request->all());
-        $category->save();       
+        $category->save();    
+        Flash::warning("Se ha editado la categoria ".$category->name.' de forma satisfactoria.')->important();
         return redirect()->route('category.index');
     }
 
@@ -88,9 +93,9 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-         $category=Category::find($id);
+        $category=Category::find($id);
         $category->delete();
-       
+        Flash::error("Se ha elimnado la categoria ".$category->name.' de forma satisfactoria.')->important();
         return redirect()->route("category.index");
     }
 }

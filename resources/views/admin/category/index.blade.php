@@ -1,37 +1,27 @@
-@extends('admin.template.main')
-@section('content')
-<div class="container text-center">
-    <div class="page-header">
-        <h1>CATEGORIAS</h1>
-        <a href="{{route('category.create')}}" class="btn btn-primary">Registrar Categoria</a>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover ">
-            <thead>
-                <tr>
-                    <th>Nombres</th>
-                    <th>Slugs</th>
-                    <th>Descripcion</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($categories as $category)
-                <tr>
-                    <td>{{$category->name}}</td>
-                    <td>{{$category->slug}}</td>
-                    <td>{{$category->description}}</td>
-                     <td>
-                        <a href="{{route('category.edit',$category->id)}}" class="btn btn-warning">Editar</a>
-                         <a href="{{route('category.destroy',$category->id)}}" class="btn btn-danger">Eliminar</a>
-                     </td>                      
-                </tr>
-                @endforeach
-                
-            </tbody>
-        </table>
-        {!! $categories->render() !!}
-    </div>
+@extends('admin.template.main') @section('content')
+<div class="row text-center">
+    <h1>CATEGORIAS</h1>
 </div>
-
+<div class="row">
+    {!! Form::model(Request::all(),['route'=>'category.index','method'=>'GET','class'=>'navbar-form nav-left pull-right']) !!} @include('admin.category.partials.search') {!! Form::submit('Buscar',['class'=>'btn btn-default']) !!} {!! Form::close() !!}
+    <p>
+        <a href="{{route('category.create')}}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+ Agregar Categoria</a>
+    </p>
+</div>
+<div class="row">
+    <p>Hay {{$categories->total()}} categorias.</p>
+</div>
+<div class="row text-center">
+    
+    <div class="table-responsive">
+       @if($categories->total() > 0)
+        @include('admin.category.partials.table')
+          @else
+    <span class="label label-default">No hay Categorias</span> 
+    @endif 
+    </div>
+  
+    {!! $categories->appends(Request::only(['name']))->render() !!}
+</div>
 @endsection

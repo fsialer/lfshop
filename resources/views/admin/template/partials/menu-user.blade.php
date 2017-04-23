@@ -4,7 +4,7 @@
     <ul class="dropdown-menu" role="menu">
         <li><a href="">{{Auth::user()->name}}</a></li>
         <li><a href="">Pedidos</a></li>
-        <li><a href="{{route('logout')}}">Cerrar Sesion</a></li>
+        <li><a href="{{route('logout')}}"><i class="fa fa-sign-out" aria-hidden="true"></i> Cerrar Sesion</a></li>
     </ul>
     </li>
 @else

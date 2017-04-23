@@ -1,55 +1,29 @@
-@extends('admin.template.main')
-@section('content')
-<div class="container text-center">
-    <div class="page-header">
-        <h1>PRODUCTOS</h1>
-        <a href="{{route('product.create')}}" class="btn btn-primary">Registrar Producto</a>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                   <th>Categoria</th>
-                   <th>Marca</th>
-                   <th>Imagen</th>
-                    <th>Nombres</th>
-                    <th>Slugs</th>
-                    <th>Descripcion</th>
-                    <th>Extraccion</th>
-                    <th>Precio</th>
-                    <th>Visible</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($products as $product)
-                <tr>                
-                    <td>{{$product->category->name}}</td>  
-                               
-                   <td>{{$product->mark->name}}</td>
-                    <td>
-                    @foreach($product->images as $image)
-                    
-                    <img src="{{asset('images/products/'.$image->name)}}" alt="" width="50"> 
-                    @endforeach
-                    </td>    
-                   <td>{{$product->name}}</td>
-                   <td>{{$product->slug}}</td>
-                   <td>{{$product->description}}</td>
-                    <td>{{$product->extract}}</td>
-                    <td>${{number_format($product->price,2)}}</td>
-                    <td>{{$product->visible}}</td>
-                     <td>
-                        <a href="{{route('product.edit',$product->slug)}}" class="btn btn-warning">Editar</a>
-                        <a href="{{route('product.destroy',$product->id)}}" class="btn btn-danger">Eliminar</a>
-                     </td>                      
-                </tr>
-                @endforeach
-                
-            </tbody>
-        </table>
-        {!! $products->render() !!}
-    </div>
+@extends('admin.template.main') @section('content')
+
+<div class="row text-center">
+    <h1>PRODUCTOS</h1>
 </div>
+<div class="row">
+    {!! Form::model(Request::all(),['route'=>'product.index','method'=>'GET','class'=>'navbar-form nav-left pull-right']) !!}
+    <a href="{{route('pdf.product')}}" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a pdf</a> @include('admin.product.partials.search') {!! Form::submit('Buscar',['class'=>'btn btn-default']) !!} {!! Form::close() !!}
+
+    <p>
+        <a href="{{route('product.create')}}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+ Agregar Producto</a>
+    </p>
+</div>
+<div class="row">
+    <p>Hay {{$products->total()}} productos.</p>
+</div>
+
+<div class="row text-center">
+    <div class="table-responsive">
+        @include('admin.product.partials.table')
+
+    </div>
+    {!! $products->appends(Request::only(['name']))->render() !!}
+</div>
+
+
 
 @endsection

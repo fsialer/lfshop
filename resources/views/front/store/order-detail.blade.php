@@ -48,7 +48,7 @@
                 </tbody>
             </table>
             <h3>
-                Total:${{number_format($total,2)}}
+                <span class="label label-success">Total: ${{number_format($total,2)}}</span>
             </h3>
             <p>
                 <a class="btn btn-primary" href="{{route('cart.show')}}">Regresar</a>

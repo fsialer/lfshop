@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 class Product extends Model
 {
     use Sluggable;
@@ -18,13 +17,22 @@ class Product extends Model
         ];
     }
     protected $table="products";
-    protected $fillable=['category_id','mark_id','name','description','extract','price','visible'];
+    protected $fillable=['subcategory_id','typeproduct_id','mark_id','name','description','extract','price','visible'];
     
-    public function category(){
-    	return $this->belongsTo('App\Category');
+    public static function filterAndPaginate($request){
+        return 
+            Product::with('subcategory.category','mark','typeproduct')->name($request->name)->orderBy('id','desc')
+                ->paginate();
+    }
+    
+    public function subcategory(){
+    	return $this->belongsTo('App\SubCategory');
     }
     public function mark(){
     	return $this->belongsTo('App\Mark');
+    }
+    public function typeproduct(){
+    	return $this->belongsTo('App\TypeProduct');
     }
     public function images(){
     	return $this->hasMany('App\Image');
@@ -32,9 +40,16 @@ class Product extends Model
     public function orders(){        
         return $this->belongsToMany('App\Order')->withPivot('quantity', 'price');
     }
-    public function scopeSearch($query,$name){
+    public function scopeName($query,$name){
          if(trim($name)!=""){
             return $query->where('name','LIKE',"%$name%");
         }
     }
+    
+/*     public function scopeCategory($query,$category){
+         if($category>0){
+            return $query->where('category_id',$category);
+        }
+    }*/
+   
 }

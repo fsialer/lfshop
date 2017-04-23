@@ -1,35 +1,27 @@
-@extends('admin.template.main')
-@section('content')
-<div class="container text-center">
-    <div class="page-header">
-        <h1>MARCAS</h1>
-        <a href="{{route('mark.create')}}" class="btn btn-primary">Registrar Marca</a>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover ">
-            <thead>
-                <tr>
-                    <th>Nombres</th>
-                    <th>Descripcion</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($marks as $mark)
-                <tr>
-                    <td>{{$mark->name}}</td>
-                    <td>{{$mark->description}}</td>
-                     <td>
-                        <a href="{{route('mark.edit',$mark->id)}}" class="btn btn-warning">Editar</a>
-                         <a href="{{route('mark.destroy',$mark->id)}}" class="btn btn-danger">Eliminar</a>
-                     </td>                      
-                </tr>
-                @endforeach
-                
-            </tbody>
-        </table>
-        {!! $marks->render() !!}
-    </div>
+@extends('admin.template.main') @section('content')
+
+<div class="row text-center">
+    <h1>MARCAS</h1>
 </div>
+<div class="row">
+    {!! Form::model(Request::all(),['route'=>'mark.index','method'=>'GET','class'=>'navbar-form nav-left pull-right']) !!} @include('admin.mark.partials.search') {!! Form::submit('Buscar',['class'=>'btn btn-default']) !!} {!! Form::close() !!}
+    <p><a href="{{route('mark.create')}}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+ Agregar Marca</a></p>
+</div>
+<div class="row">
+    <p>Hay {{$marks->total()}} marcas.</p>
+</div>
+
+<div class="row text-center">
+    <div class="table-responsive">
+       @if($marks->total() > 0)
+        @include('admin.mark.partials.table')
+        @else
+        <span class="label label-default">No hay Marcas</span> 
+        @endif
+    </div>
+    {!! $marks->appends(Request::only(['name']))->render() !!}
+</div>
+
 
 @endsection

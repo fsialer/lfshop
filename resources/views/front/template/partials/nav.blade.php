@@ -12,13 +12,10 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-               <li class="active"><a href="{{route('store.index')}}">Store</a></li>
-                <li class="active"><a href="{{route('store.index')}}">Conocenos</a></li>
-                <li class="active"><a href="{{route('store.index')}}">Contactanos</a></li>
-
+                <li class="active"><a href="{{route('store.index')}}">Store</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{route('cart.show')}}"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a></li>
+                <li><a href="{{route('cart.show')}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
                 @include('front.template.partials.menu-user')
             </ul>
         </div>

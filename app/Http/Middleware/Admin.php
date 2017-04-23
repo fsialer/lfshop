@@ -19,12 +19,15 @@ class Admin
     }
     public function handle($request, Closure $next)
     {
-        if ($this->auth->user()->admin()) {
-            return $next($request);
-        }else{
-            return redirect()->route('store.index');
-            abort(401, 'Unauthorized.');
+        if(!$this->auth->user()->admin()){
+            $this->auth->logout();
+            if($request->ajax()){
+                return response('Unauthorized.',401);
+            }else{
+                return redirect()->to('login');
+            }
         }
         
+        return $next($request);
     }
 }

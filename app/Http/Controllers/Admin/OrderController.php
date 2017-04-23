@@ -15,7 +15,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $orders=Order::search($request->date_order)->orderBy('id','desc')->paginate(6);
+        $orders=Order::filterAndPaginate($request);
         return view('admin.order.index')->with('orders',$orders);
     }
 
@@ -48,11 +48,8 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order=Order::find($id);
-        $order->user; 
-        $order->products;
+        $order=Order::with('user','products')->find($id);
         $total=0;
-        //dd($order->products);
         foreach($order->products as $product){
             $total+=$product->pivot->price*$product->pivot->quantity;
         }

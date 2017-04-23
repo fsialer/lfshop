@@ -162,6 +162,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+       
 
         /*
          * Package Service Providers...
@@ -180,6 +181,12 @@ return [
         //Providers nuevos
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        Passval\Providers\ValidatorServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
+    
+        
 
     ],
 
@@ -232,6 +239,8 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Input'     => Illuminate\Support\Facades\Input::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        
 
     ],
 

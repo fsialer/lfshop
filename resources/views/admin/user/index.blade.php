@@ -1,39 +1,28 @@
-@extends('admin.template.main')
-@section('content')
-<div class="container text-center">
-    <div class="page-header">
+@extends('admin.template.main') @section('content')
+
+    <div class="row text-center">
         <h1>USUARIOS</h1>
-        <a href="{{route('user.create')}}" class="btn btn-primary">Registrar Usuario</a>
     </div>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover ">
-            <thead>
-                <tr>
-                    <th>Nombres</th>
-                    <th>Email</th>
-                    <th>Tipo</th>
-                    <th>Activo</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($users as $user)
-                <tr>
-                    <td>{{$user->name}} {{$user->last_name}}</td>
-                    <td>{{$user->email}}</td>
-                    <td>{{$user->type}}</td>
-                    <td>{{$user->active}}</td>
-                     <td>
-                        <a href="{{route('user.edit',$user->id)}}" class="btn btn-warning">Editar</a>
-                         <a href="{{route('user.destroy',$user->id)}}" class="btn btn-danger">Eliminar</a>
-                     </td>                      
-                </tr>
-                @endforeach
-                
-            </tbody>
-        </table>
-        {!! $users->render() !!}
+    <div class="row">
+        {!! Form::model(Request::all(),['route'=>'user.index','method'=>'GET','class'=>'navbar-form nav-left pull-right']) !!} @include('admin.user.partials.search') {!! Form::submit('Buscar',['class'=>'btn btn-default']) !!} {!! Form::close() !!}
+        <p> <a href="{{route('user.create')}}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar Usuario</a></p>
     </div>
-</div>
+    <div class="row">
+        <p>Hay {{$users->total()}} usuarios.</p>
+    </div>
+    
+    <div class="row text-center">
+        <div class="table-responsive">
+           @if($users->total() > 0) 
+         @include('admin.user.partials.table')  
+        @else
+        <span class="label label-default">No hay Usuarios</span> 
+        @endif       
+           
+        </div>
+        {!! $users->appends(Request::only(['name']))->render() !!}
+    </div>
+
+
 
 @endsection

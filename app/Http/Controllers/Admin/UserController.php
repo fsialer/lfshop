@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Http\Requests\UserRequest;
+use App\Http\Requests\EditUserRequest;
 use App\Http\Controllers\Controller;
 use App\User;
+use Laracasts\Flash\Flash;
 class UserController extends Controller
 {
     /**
@@ -14,7 +18,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-         $users=User::search($request->name)->orderBy('id','desc')->paginate(6);
+         $users=User::filterAndPaginate($request);
         return view('admin.user.index')->with('users',$users);
     }
 
@@ -34,13 +38,16 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-         $user=new User($request->all());
-        $user->password=bcrypt($user->password);
-        $user->active=1;
-        $user->save();
+        $user=new User($request->all());
         
+        //$user->password=bcrypt($user->password);
+        $user->type='admin';
+        $user->fullname=$user->name.' '.$user->last_name;        
+        $user->active=1;       
+        $user->save();
+        Flash::success("Se ha creado el usuario ".$user->fullname.'de forma satisfactoria.')->important();
         return redirect()->route('user.index');
     }
 
@@ -74,13 +81,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditUserRequest $request, $id)
     {
-        $user=User::find($id);
-        
+        $user=User::find($id);        
         $user->fill($request->all());
         $user->active=$request->has('active') ? 1 : 0;
         $user->save();       
+         Flash::warning("Se ha editado el usuario ".$user->name.' '.$user->last_name.'de forma satisfactoria.')->important();
         return redirect()->route('user.index');
     }
 
@@ -94,7 +101,7 @@ class UserController extends Controller
     {
          $user=User::find($id);
         $user->delete();
-       
+       Flash::error("Se ha elimnado el usuario ".$user->name.' '.$user->last_name.'de forma satisfactoria.')->important();
         return redirect()->route("user.index");
     }
 }

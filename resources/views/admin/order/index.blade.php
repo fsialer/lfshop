@@ -1,42 +1,26 @@
-@extends('admin.template.main')
-@section('content')
-<div class="container text-center">
-    <div class="page-header">
-        <h1>PEDIDOS</h1>
-        <a href="{{route('category.create')}}" class="btn btn-primary">Registrar Categoria</a>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover ">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Usuario</th>
-                    <th>Subtotal</th>
-                    <th>Envio</th>
-                    <th>Total</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($orders as $order)
-                <tr>
-                    <td>{{$order->created_at}}</td>
-                    <td>{{$order->user->name}}</td>
-                    <td>${{number_format($order->subtotal,2)}}</td>
-                    <td>${{number_format($order->shipping,2)}}</td>
-                    <td>${{number_format($order->subtotal*$order->shipping,2)}}</td>
-                     <td>
-                        <a href="{{route('order.show',$order->id)}}" class="btn btn-info">Ver Detalle</a>
-                         <a href="{{route('order.destroy',$order->id)}}" class="btn btn-danger">Eliminar</a>
-                     </td>                      
-                </tr>
-                @endforeach
-                
-            </tbody>
-        </table>
-        {!! $orders->render() !!}
-    </div>
-    
+@extends('admin.template.main') @section('content')
+
+<div class="row text-center">
+    <h1>PEDIDOS</h1>
 </div>
+<div class="row">
+    {!! Form::model(Request::all(),['route'=>'order.index','method'=>'GET','class'=>'navbar-form nav-left pull-right']) !!} @include('admin.order.partials.search') {!! Form::submit('Buscar',['class'=>'btn btn-default']) !!} {!! Form::close() !!}
+</div>
+<div class="row">
+    <p>Hay {{$orders->total()}} ordenes.</p>
+</div>
+
+<div class="row text-center">
+    <div class="table-responsive">
+        @if($orders->total() > 0) 
+        @include('admin.order.partials.table') 
+        @else
+        <span class="label label-default">No hay PEDIDOS</span> 
+        @endif       
+    </div>
+    {!! $orders->render() !!}
+</div>
+
+
 
 @endsection

@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>FShoP</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" integrity="sha384-gv0oNvwnqzF6ULI9TVsSmnULNb3zasNysvWwfT/s4l8k5I+g6oFz9dye0wg3rQ2Q" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{asset('css/main.css')}}">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" integrity="sha384-gv0oNvwnqzF6ULI9TVsSmnULNb3zasNysvWwfT/s4l8k5I+g6oFz9dye0wg3rQ2Q" crossorigin="anonymous">    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="{{asset('plugins/chosen/css/chosen.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/main.css')}}">
 <!--    <link rel="stylesheet" href="{{asset('plugins/bootstrap/css/bootstrap.css')}}">-->
 </head>
 <body>
@@ -19,6 +20,9 @@
 <!--    <script src="{{asset('plugins/jquery/js/jquery-2.2.3.js')}}"></script>-->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <!--    <script src="{{asset('plugins/bootstrap/js/bootstrap.js')}}"></script>-->
-    <script src="{{asset('js/main.js')}}"></script>    
+    <script src="{{asset('js/main.js')}}"></script>   
+    <script id="dsq-count-scr" src="//shoponline-1.disqus.com/count.js" async></script>
+    <script src="{{asset('plugins/chosen/js/chosen.jquery.min.js')}}"></script>
+    @yield('js')
 </body>
 </html>

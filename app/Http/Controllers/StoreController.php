@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Category;
-use App\Mark;
+use App\SubCategory;
 use App\Image;
+use App\TypeProduct;
+use App\Mark;
 
 class StoreController extends Controller
 {
@@ -18,12 +20,14 @@ class StoreController extends Controller
     
     public function index()
     {
-        $products= Product::paginate(8);
-        $products->each(function($products){
+        $products= Product::with('subcategory.category','images')->orderBy('id','desc')->paginate();
+        /*$products->each(function($products){
             $products->category;
             $products->mark;
             $products->images;
-        });
+            ///dd($products->images->first());
+        });*/
+        
         return view('front.store.index')->with('products',$products);
     }
 
@@ -96,4 +100,29 @@ class StoreController extends Controller
     {
         //
     }
+    
+    public function SearchCategory($slug){
+        $category=Category::with('subcategories')->searchCategory($slug)->first(); 
+        //dd($category);
+        $subcategories=$category->subcategories()->paginate();
+        return view('front.store.category')->with('subcategories',$subcategories);
+    }
+    
+    public function SearchSubCategory(Request $request,$slug,$slug2){
+        $count=SubCategory::searchSubCategory($slug2)->count();
+        if($count>0){
+            $subcategory=SubCategory::with('products')->searchSubCategory($slug2)->firstOrFail();  
+            $products=$subcategory->products()->orderBy('id','desc')->paginate(); 
+        }else{
+            $typeproduct=TypeProduct::with('products')->searchTypeProduct($slug2)->firstOrFail();  
+            $products=$typeproduct->products()->orderBy('id','desc')->paginate(); 
+        }       
+        return view('front.store.product')->with('products',$products);
+    }
+   /* public function SearchTypeProduct(Request $request,$slug,$slug2,$slug3){
+        $typeproduct=TypeProduct::with('products')->searchTypeProduct($slug3)->firstOrFail();  
+        $products=$typeproduct->products()->orderBy('id','desc')->paginate();    
+            
+        return view('front.store.product')->with('products',$products);
+    }*/
 }

@@ -1,48 +1,100 @@
-@extends('admin.template.main')
-@section('content')
-  <div class="container text-center">
-        <div class="page-header">
-            <h1><i class="fa fa-rocket"></i> MY STORE - DASHBOARD</h1>
-        </div>
-        
-        <h2>Bienvenido(a) {{ Auth::user()->user }} al Panel de administración de tu tienda en línea.</h2><hr>
-        
-        <div class="row">
-            
-            <div class="col-md-6">
-                <div class="panel">
-                    <i class="fa fa-list-alt fa-5x"></i>
-                    <a href="{{ route('category.index') }}" class="btn btn-warning btn-block btn-home-admin">CATEGORÍAS</a>
-                </div>
-            </div>
-            
-            <div class="col-md-6">
-                <div class="panel">
-                    <i class="fa fa-shopping-cart  fa-5x"></i>
-                    <a href="{{ route('product.index') }}" class="btn btn-warning btn-block btn-home-admin">PRODUCTOS</a>
-                </div>
-            </div>
-                    
-        </div>
-        
-        <div class="row">
-            
-            <div class="col-md-6">
-                <div class="panel">
-                    <i class="fa fa-cc-paypal  fa-5x"></i>
-                    <a href="{{ route('order.index') }}" class="btn btn-warning btn-block btn-home-admin">PEDIDOS</a>
-                </div>
-            </div> 
-            
-            <div class="col-md-6">
-                <div class="panel">
-                    <i class="fa fa-users fa-5x"></i>
-                    <a href="{{ route('user.index') }}" class="btn btn-warning btn-block btn-home-admin">USUARIOS</a>
-                </div>
-            </div>
-                    
-        </div>
-        
+@extends('admin.template.main') @section('content')
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Dashboard</h1>
     </div>
-    <hr>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-list-alt fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{$categories->count()}}</div>
+                        <div>CATEGORIAS</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{{route('category.index')}}">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-shopping-cart fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{$products->count()}}</div>
+                        <div>PRODUCTOS</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{{route('product.index')}}">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-cc-paypal fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{$orders->count()}}</div>
+                        <div>PEDIDOS</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{{route('order.index')}}">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-users fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{$users->count()}}</div>
+                        <div>USUARIOS</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{{route('user.index')}}">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
 @endsection

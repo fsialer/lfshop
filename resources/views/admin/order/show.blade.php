@@ -1,7 +1,7 @@
-@extends('front.template.main') 
+@extends('admin.template.main') 
 @section('content')
-<div class="container text-center">
-    <div class="page-header">
+
+    <div class="text-center">
         <h1>Detalle del pedido</h1>
     </div>
     <div>
@@ -57,6 +57,6 @@
             </p>
         </div>
     </div>
-</div>
+
 
 @endsection

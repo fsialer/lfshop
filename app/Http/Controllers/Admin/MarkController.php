@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Http\Requests\MarkRequest;
+use App\Http\Requests\EditMarkRequest;
 use App\Http\Controllers\Controller;
 use App\Mark;
+use Laracasts\Flash\Flash;
 class MarkController extends Controller
 {
     /**
@@ -14,7 +18,8 @@ class MarkController extends Controller
      */
     public function index(Request $request)
     {
-        $marks=Mark::search($request->name)->orderBy('id','desc')->paginate(6);
+        $marks=Mark::filterAndPaginate($request);
+         
         return view('admin.mark.index')->with('marks',$marks);
     }
 
@@ -25,6 +30,7 @@ class MarkController extends Controller
      */
     public function create()
     {
+         
          return view('admin.mark.create');
     }
 
@@ -34,11 +40,11 @@ class MarkController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MarkRequest $request)
     {
          $mark=new Mark($request->all());
         $mark->save();
-        
+        Flash::success("Se ha creado la marca ".$mark->name.' de forma satisfactoria.')->important();
         return redirect()->route('mark.index');
     }
 
@@ -62,6 +68,7 @@ class MarkController extends Controller
     public function edit($id)
     {
         $mark=Mark::find($id);
+        
         return view('admin.mark.edit')->with('mark',$mark);
     }
 
@@ -72,11 +79,12 @@ class MarkController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditMarkRequest $request, $id)
     {
          $mark=Mark::find($id);
         $mark->fill($request->all());
-        $mark->save();       
+        $mark->save();   
+         Flash::warning("Se ha editado la marca ".$mark->name.' de forma satisfactoria.')->important();
         return redirect()->route('mark.index');
     }
 
@@ -90,7 +98,7 @@ class MarkController extends Controller
     {
          $mark=Mark::find($id);
         $mark->delete();
-       
+        Flash::error("Se ha elimino la marca ".$mark->name.' de forma satisfactoria.')->important();
         return redirect()->route("mark.index");
     }
 }
